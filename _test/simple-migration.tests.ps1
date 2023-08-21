@@ -34,7 +34,7 @@ Describe 'Get-ArrayReversed' {
 }
 
 Describe 'Merge-Csv' {
-    It 'imports a single file' {
+    It 'imports a single explicit file' {
         Merge-Csv `
             -InputPath:"./_test/data-000.csv" `
             -OutputPath:"./_test/data.csv"
@@ -53,7 +53,7 @@ Describe 'Merge-Csv' {
         Should -Be "000"
     }
 
-    It 'imports two files' {
+    It 'imports two explicit files' {
         Merge-Csv `
             -InputPath:@(
             "./_test/data-000.csv"
@@ -74,7 +74,29 @@ Describe 'Merge-Csv' {
         ).Value |
         Should -Be "001"
     }
-}
+
+    It 'imports three explicit files' {
+        Merge-Csv `
+            -InputPath:@(
+            "./_test/data-000.csv"
+            "./_test/data-001.csv"
+            "./_test/data-002.csv"
+        ) `
+            -OutputPath:"./_test/data.csv"
+
+        $OutputData = Import-Csv `
+            -Path:"./_test/data.csv"
+
+        $OutputData.Count |
+        Should -Be 1
+
+        $(
+            $OutputData |
+            Select-Object `
+                -First:1
+        ).Value |
+        Should -Be "002"
+    }}
 
 Describe 'Merge-Data' {
     It 'returns the lastest object' {

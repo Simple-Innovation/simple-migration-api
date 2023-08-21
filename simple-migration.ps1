@@ -28,7 +28,6 @@ function Merge-Csv {
             ValueFromPipelineByPropertyName,
             HelpMessage = "Path to one or more locations.")]
         [ValidateNotNullOrEmpty()]
-        [SupportsWildcards()]
         [string[]]
         $InputPath,
 
